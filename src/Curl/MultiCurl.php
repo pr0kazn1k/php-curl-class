@@ -105,10 +105,11 @@ class MultiCurl
      * @access public
      * @param  $url
      * @param  $data
+     * @param  $proxy
      *
      * @return object
      */
-    public function addGet($url, $data = array())
+    public function addGet($url, $data = array(), $proxy = null)
     {
         if (is_array($url)) {
             $data = $url;
@@ -118,6 +119,12 @@ class MultiCurl
         $curl->setUrl($url, $data);
         $curl->setOpt(CURLOPT_CUSTOMREQUEST, 'GET');
         $curl->setOpt(CURLOPT_HTTPGET, true);
+        
+        if ($proxy) {
+            $curl->setOpt(CURLOPT_HTTPPROXYTUNNEL, 1);
+            $curl->setOpt(CURLOPT_PROXY, $proxy);
+        }
+        
         $this->queueHandle($curl);
         return $curl;
     }
